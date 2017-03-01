@@ -146,5 +146,4 @@ public class UpdateAppTask extends BaseTask {
             }
         }
     }
-
 }
